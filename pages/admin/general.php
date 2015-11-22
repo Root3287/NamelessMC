@@ -260,6 +260,7 @@ if(Input::exists()) {
 						  <option value="15"<?php if($theme === "15") { ?> selected="selected"<?php } ?>>Superhero</option>
 						  <option value="16"<?php if($theme === "16") { ?> selected="selected"<?php } ?>>United</option>
 						  <option value="17"<?php if($theme === "17") { ?> selected="selected"<?php } ?>>Yeti</option>
+						  <option value="18"<?php if($theme === "18") { ?> selected="selected"<?php } ?>>Custom-1</option>
 						</select>
 					</div>
 					<div class="form-group">
