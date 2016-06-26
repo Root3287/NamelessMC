@@ -84,6 +84,19 @@ $posts = $queries->getWhere("posts", array("topic_id", "=", $tid));
 // Can the user post a reply in this topic?
 $can_reply = $forum->canPostReply($topic->forum_id, $user->data()->group_id);
 
+//Get Self Url()
+function getSelfUrl(){
+    if($_SERVER['SERVER_ADDR'] !== "127.0.0.1"){
+        if($_SERVER['SERVER_PORT'] == 80){
+            return $_SERVER['REQUEST_SCHEME']."://".$_SERVER['SERVER_NAME'];
+        }else{
+            return $_SERVER['REQUEST_SCHEME']."://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'];
+        }
+    }else{
+        return false;
+    }
+}
+
 // Quick reply
 if(Input::exists()) {
 	if(!$user->isLoggedIn() && !$can_reply){ 
@@ -228,11 +241,12 @@ if(!Cookie::exists('nl-topic-' . $tid)) {
 	<?php
 		}
 	}
-	
+	?>
+	<span class="pull-right">
+	<?php
 	// Is the user a moderator?
 	if($user->isLoggedIn() && ($user->data()->group_id == 2 || $user->data()->group_id == 3)){
 	?>
-	  <span class="pull-right">
 		<div class="btn-group">
 		  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 			Mod Actions <span class="caret"></span>
@@ -245,10 +259,20 @@ if(!Cookie::exists('nl-topic-' . $tid)) {
 			<li><a href="/forum/sticky_thread/?tid=<?php echo $tid; ?>">Sticky Thread</a></li>
 		  </ul>
 		</div>
-	  </span>
 	<?php 
 	}
 	?>
+		<!-- Share -->
+		<div class="btn-group">
+		  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+			Sharing <span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu" role="menu">
+			<li><a target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo getSelfURL()."forum/view_topic/?tid=".$tid;?>">Share on Twitter</a></li>
+			<li><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo getSelfURL()."forum/view_topic/?tid=".$tid;?>">Share on Facebook</a></li>
+		  </ul>
+		</div>
+	  </span>
 	  <br /><br />
 	  <?php 
 	  // PAGINATION
